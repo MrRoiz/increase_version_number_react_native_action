@@ -1,6 +1,10 @@
 {
   "name": "increase_version_number_react_native_action",
-  "version": "0.0.2",
+<<<<<<< HEAD
+  "version": "0.1.1",
+=======
+  "version": "0.1.0",
+>>>>>>> 92f3d7b (updated code version)
   "private": true,
   "scripts": {
     "android": "react-native run-android",
