@@ -32,24 +32,25 @@ jobs:
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
           expo-packager: yarn
       - run: yarn install
-        yarn bumpPatch | grep -oE '[^ ]+$' > bumpResults.txt
-          
-        androidBuild=$(sed -n 5p bumpResults.txt)
-        iosBuild=$(sed -n 4p bumpResults.txt)
-        packageVersion=$(sed -n 1p bumpResults.txt)
+      - run: |
+          yarn bumpPatch | grep -oE '[^ ]+$' > bumpResults.txt
+            
+          androidBuild=$(sed -n 5p bumpResults.txt)
+          iosBuild=$(sed -n 4p bumpResults.txt)
+          packageVersion=$(sed -n 1p bumpResults.txt)
 
-        if ${IS_FEATURE} == true; then
-          echo "COMMIT_MESSAGE='[update] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
-        else
-          echo "COMMIT_MESSAGE='[fix] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
-        fi
+          if ${IS_FEATURE} == true; then
+            echo "COMMIT_MESSAGE='[update] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+          else
+            echo "COMMIT_MESSAGE='[fix] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+          fi
 
-        rm bumpResults.txt
+          rm bumpResults.txt
       - uses: EndBug/add-and-commit@v9
         with:
-          author_name: "$env.COMMIT_AUTHOR_NAME"
-          author_email: "$env.COMMIT_AUTHOR_EMAIL"
-          message: "$env.COMMIT_MESSAGE"
+          author_name: ${{env.COMMIT_AUTHOR_NAME}}
+          author_email: ${{env.COMMIT_AUTHOR_EMAIL}}
+          message: ${{env.COMMIT_MESSAGE}}
           add: '.'
 
       

@@ -2,7 +2,6 @@ name: Bump version on dev/master brach
 env:
   COMMIT_AUTHOR_NAME: Admin
   COMMIT_AUTHOR_EMAIL: admin@meltstudio.co
-  COMMIT_MESSAGE: '[update] updated code version'
 on: 
   pull_request_target:
     types:
@@ -33,15 +32,15 @@ jobs:
           expo-packager: yarn
       - run: yarn install
       - run: |
-        yarn bumpMinor | grep -oE '[^ ]+$' > bumpResults.txt
-        
-        androidBuild=$(sed -n 5p bumpResults.txt)
-        iosBuild=$(sed -n 4p bumpResults.txt)
-        packageVersion=$(sed -n 1p bumpResults.txt)
+          yarn bumpMinor | grep -oE '[^ ]+$' > bumpResults.txt
+          
+          androidBuild=$(sed -n 5p bumpResults.txt)
+          iosBuild=$(sed -n 4p bumpResults.txt)
+          packageVersion=$(sed -n 1p bumpResults.txt)
 
-        echo "COMMIT_MESSAGE='[update] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE='[update] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
 
-        rm bumpResults.txt
+          rm bumpResults.txt
       - uses: EndBug/add-and-commit@v9
         with:
           author_name: "$env.COMMIT_AUTHOR_NAME"
@@ -69,20 +68,20 @@ jobs:
           expo-packager: yarn
       - run: yarn install
       - run: |
-        yarn bumpPatch | grep -oE '[^ ]+$' > bumpResults.txt
-        
-        androidBuild=$(sed -n 5p bumpResults.txt)
-        iosBuild=$(sed -n 4p bumpResults.txt)
-        packageVersion=$(sed -n 1p bumpResults.txt)
+          yarn bumpPatch | grep -oE '[^ ]+$' > bumpResults.txt
+          
+          androidBuild=$(sed -n 5p bumpResults.txt)
+          iosBuild=$(sed -n 4p bumpResults.txt)
+          packageVersion=$(sed -n 1p bumpResults.txt)
 
-        echo "COMMIT_MESSAGE='[fix] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
-        
-        rm bumpResults.txt
+          echo "COMMIT_MESSAGE='[fix] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+          
+          rm bumpResults.txt
 
       - uses: EndBug/add-and-commit@v9
         with:
-          author_name: "$env.COMMIT_AUTHOR_NAME"
-          author_email: "$env.COMMIT_AUTHOR_EMAIL"
-          message: "$env.COMMIT_MESSAGE"
+          author_name: ${{env.COMMIT_AUTHOR_NAME}}
+          author_email: ${{env.COMMIT_AUTHOR_EMAIL}}
+          message: ${{env.COMMIT_MESSAGE}}
           add: '.'
       
