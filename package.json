@@ -1,13 +1,16 @@
 {
   "name": "increase_version_number_react_native_action",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "bumpPatch": "npx react-native bump-version --type patch",
+    "bumpMinor": "npx react-native bump-version --type minor",
+    "bumpMajor": "npx react-native bump-version --type major"
   },
   "dependencies": {
     "react": "18.1.0",
@@ -21,6 +24,7 @@
     "eslint": "^7.32.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.72.1",
+    "react-native-cli-bump-version": "^1.5.0",
     "react-test-renderer": "18.1.0"
   },
   "jest": {
