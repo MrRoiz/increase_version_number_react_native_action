@@ -7,7 +7,10 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "bumpPatch": "npx react-native bump-version --type patch",
+    "bumpMinor": "npx react-native bump-version --type minor",
+    "bumpMajor": "npx react-native bump-version --type major"
   },
   "dependencies": {
     "react": "18.1.0",
