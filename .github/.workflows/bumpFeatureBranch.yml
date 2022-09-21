@@ -1,0 +1,39 @@
+name: Bump version on dev/master brach
+
+on: 
+  pull_request_target:
+    types:
+      - closed
+    branches:
+      - 'feature/**'
+
+jobs:
+  bump_patch:
+    name: Automatic bump patch
+    if: github.event.pull_request.merged == true 
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: expo/expo-github-action@v5
+        with:
+          expo-version: 4.x
+          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
+          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          expo-packager: yarn
+      - run: yarn install
+      - run: yarn bumpPatch
+      - uses: EndBug/add-and-commit@v9
+        with:
+          author_name: Nad GarDez
+          author_email: iranad@hotmail.com
+          message: 'updated code version'
+          add: '.'
+
+      
