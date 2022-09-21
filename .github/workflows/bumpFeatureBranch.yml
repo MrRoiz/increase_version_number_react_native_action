@@ -1,4 +1,4 @@
-name: Bump version on dev/master brach
+name: Bump version on feature brach
 
 on: 
   pull_request_target:
