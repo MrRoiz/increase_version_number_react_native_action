@@ -34,11 +34,11 @@ jobs:
       - run: |
           yarn bumpMinor | grep -oE '[^ ]+$' > bumpResults.txt
           
-          androidBuild=$(sed -n 5p bumpResults.txt)
-          iosBuild=$(sed -n 4p bumpResults.txt)
+          androidBuild=$(sed -n 4p bumpResults.txt)
+          iosBuild=$(sed -n 3p bumpResults.txt)
           packageVersion=$(sed -n 1p bumpResults.txt)
 
-          echo "COMMIT_MESSAGE='[update] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=[update] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)" >> $GITHUB_ENV
 
           rm bumpResults.txt
       - uses: EndBug/add-and-commit@v9
@@ -70,11 +70,11 @@ jobs:
       - run: |
           yarn bumpPatch | grep -oE '[^ ]+$' > bumpResults.txt
           
-          androidBuild=$(sed -n 5p bumpResults.txt)
-          iosBuild=$(sed -n 4p bumpResults.txt)
+          androidBuild=$(sed -n 4p bumpResults.txt)
+          iosBuild=$(sed -n 3p bumpResults.txt)
           packageVersion=$(sed -n 1p bumpResults.txt)
 
-          echo "COMMIT_MESSAGE='[fix] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=[fix] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)" >> $GITHUB_ENV
           
           rm bumpResults.txt
 
