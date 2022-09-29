@@ -1,5 +1,7 @@
-name: Bump version on dev/master brach
-
+name: Bump version on feature brach
+env:
+  COMMIT_AUTHOR_NAME: Admin
+  COMMIT_AUTHOR_EMAIL: admin@meltstudio.co
 on: 
   pull_request_target:
     types:
@@ -10,6 +12,8 @@ on:
 jobs:
   bump_patch:
     name: Automatic bump patch
+    env:
+      IS_FEATURE: ${{github.event.pull_request.merged == true && startsWith(github.head_ref, 'feature/')}}
     if: github.event.pull_request.merged == true 
     runs-on: ${{ matrix.os }}
     strategy:
@@ -28,12 +32,24 @@ jobs:
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
           expo-packager: yarn
       - run: yarn install
-      - run: yarn bumpPatch
+        yarn bumpPatch | grep -oE '[^ ]+$' > bumpResults.txt
+          
+        androidBuild=$(sed -n 5p bumpResults.txt)
+        iosBuild=$(sed -n 4p bumpResults.txt)
+        packageVersion=$(sed -n 1p bumpResults.txt)
+
+        if ${IS_FEATURE} == true; then
+          echo "COMMIT_MESSAGE='[update] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+        else
+          echo "COMMIT_MESSAGE='[fix] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+        fi
+
+        rm bumpResults.txt
       - uses: EndBug/add-and-commit@v9
         with:
-          author_name: Nad GarDez
-          author_email: iranad@hotmail.com
-          message: 'updated code version'
+          author_name: "$env.COMMIT_AUTHOR_NAME"
+          author_email: "$env.COMMIT_AUTHOR_EMAIL"
+          message: "$env.COMMIT_MESSAGE"
           add: '.'
 
       
