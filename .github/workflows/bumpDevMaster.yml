@@ -80,8 +80,8 @@ jobs:
 
       - uses: EndBug/add-and-commit@v9
         with:
-          author_name: "$env.COMMIT_AUTHOR_NAME"
-          author_email: "$env.COMMIT_AUTHOR_EMAIL"
-          message: "$env.COMMIT_MESSAGE"
+          author_name: ${{env.COMMIT_AUTHOR_NAME}}
+          author_email: ${{env.COMMIT_AUTHOR_EMAIL}}
+          message: ${{env.COMMIT_MESSAGE}}
           add: '.'
       
