@@ -35,8 +35,8 @@ jobs:
       - run: |
           yarn bumpPatch | grep -oE '[^ ]+$' > bumpResults.txt
             
-          androidBuild=$(sed -n 5p bumpResults.txt)
-          iosBuild=$(sed -n 4p bumpResults.txt)
+          androidBuild=$(sed -n 4p bumpResults.txt)
+          iosBuild=$(sed -n 3p bumpResults.txt)
           packageVersion=$(sed -n 1p bumpResults.txt)
 
           if ${IS_FEATURE} == true; then
