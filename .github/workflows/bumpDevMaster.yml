@@ -38,7 +38,7 @@ jobs:
           iosBuild=$(sed -n 4p bumpResults.txt)
           packageVersion=$(sed -n 1p bumpResults.txt)
 
-          echo "COMMIT_MESSAGE='[update] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=[update] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)" >> $GITHUB_ENV
 
           rm bumpResults.txt
       - uses: EndBug/add-and-commit@v9
@@ -74,7 +74,7 @@ jobs:
           iosBuild=$(sed -n 4p bumpResults.txt)
           packageVersion=$(sed -n 1p bumpResults.txt)
 
-          echo "COMMIT_MESSAGE='[fix] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=[fix] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)" >> $GITHUB_ENV
           
           rm bumpResults.txt
 
