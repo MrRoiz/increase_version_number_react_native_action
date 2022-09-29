@@ -1,5 +1,8 @@
 name: Bump version on dev/master brach
-
+env:
+  COMMIT_AUTHOR_NAME: Admin
+  COMMIT_AUTHOR_EMAIL: admin@meltstudio.co
+  COMMIT_MESSAGE: '[update] updated code version'
 on: 
   pull_request_target:
     types:
@@ -22,13 +25,28 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
+      - uses: expo/expo-github-action@v5
+        with:
+          expo-version: 4.x
+          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
+          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          expo-packager: yarn
       - run: yarn install
-      - run: yarn bumpMinor
+      - run: |
+        yarn bumpMinor | grep -oE '[^ ]+$' > bumpResults.txt
+        
+        androidBuild=$(sed -n 5p bumpResults.txt)
+        iosBuild=$(sed -n 4p bumpResults.txt)
+        packageVersion=$(sed -n 1p bumpResults.txt)
+
+        echo "COMMIT_MESSAGE='[update] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+
+        rm bumpResults.txt
       - uses: EndBug/add-and-commit@v9
         with:
-          author_name: Nad GarDez
-          author_email: iranad@hotmail.com
-          message: 'updated code version'
+          author_name: "$env.COMMIT_AUTHOR_NAME"
+          author_email: "$env.COMMIT_AUTHOR_EMAIL"
+          message: "$env.COMMIT_MESSAGE"
           add: '.'
   bump_patch:
     name: Automatic bump patch
@@ -50,11 +68,21 @@ jobs:
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
           expo-packager: yarn
       - run: yarn install
-      - run: yarn bumpPatch
+      - run: |
+        yarn bumpPatch | grep -oE '[^ ]+$' > bumpResults.txt
+        
+        androidBuild=$(sed -n 5p bumpResults.txt)
+        iosBuild=$(sed -n 4p bumpResults.txt)
+        packageVersion=$(sed -n 1p bumpResults.txt)
+
+        echo "COMMIT_MESSAGE='[fix] new version to ${packageVersion} and build number to ${iosBuild} (iOS) and ${androidBuild} (Android)'" >> $GITHUB_ENV
+        
+        rm bumpResults.txt
+
       - uses: EndBug/add-and-commit@v9
         with:
-          author_name: Nad GarDez
-          author_email: iranad@hotmail.com
-          message: 'updated code version'
+          author_name: "$env.COMMIT_AUTHOR_NAME"
+          author_email: "$env.COMMIT_AUTHOR_EMAIL"
+          message: "$env.COMMIT_MESSAGE"
           add: '.'
       
